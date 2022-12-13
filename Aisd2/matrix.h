@@ -1,6 +1,7 @@
-#include <stdlib.h>
 #include <iostream>
-
+#include <math.h>
+#include <complex>
+#include <iomanip>
 using namespace std;
 
 template <class T>
@@ -27,9 +28,11 @@ public:
 	bool operator == (const Matrix& rhs);
 	friend Matrix operator / (const T& scalar, Matrix& rhs);
 	friend Matrix operator * (const T& scalar, Matrix& rhs);
-	friend std::ostream& operator << (std::ostream& out, const Matrix& matrix);
+	friend std::ostream& operator << (std::ostream& out, const Matrix<T>& matrix);
 	int GetRows() const;
 	int GetCols() const;
 	T tr();
-	Matrix Solution_of_the_equation(const Matrix& vector);
+	Matrix<T> Solution_of_the_equation(const Matrix& vector);
+
 };
+

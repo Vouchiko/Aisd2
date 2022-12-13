@@ -1,6 +1,7 @@
-#include <stdlib.h>
-#include <iostream>
 #include "matrix.h"
+#include <iostream>
+#include <random>
+#include <complex>
 
 bool double_control(char* xn);
 double double_checker();
@@ -187,7 +188,7 @@ bool Matrix<T>::operator == (const Matrix& rhs) {
 }
 
 template <class T>
-ostream& operator << (ostream& s, const Matrix& matrix) {
+ostream&  operator << (ostream& s, const Matrix<T>& matrix) {
 
     for (int i = 0; i < matrix.rows; i++) {
         for (int j = 0; j < matrix.columns; j++)
@@ -196,8 +197,8 @@ ostream& operator << (ostream& s, const Matrix& matrix) {
     }
     return s;
 }
-
-Matrix Matrix::Solution_of_the_equation(const Matrix& Mat) {
+template <class T>
+Matrix<T> Matrix<T>::Solution_of_the_equation(const Matrix& Mat) {
     double det = matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[2][1] * matrix[1][2]) -
         matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0]) +
         matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0]);
@@ -218,3 +219,9 @@ Matrix Matrix::Solution_of_the_equation(const Matrix& Mat) {
     matrixResult = matrix2 * Mat;
     return matrixResult;
 }
+
+template class Matrix<int>;
+template class Matrix<float>;
+template class Matrix<double>;
+template class Matrix<complex<float>>;
+template class Matrix<complex<double>>;
