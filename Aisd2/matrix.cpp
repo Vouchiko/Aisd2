@@ -46,7 +46,6 @@ int Matrix<T>::GetCols() const {
 
 template <class T>
 T Matrix<T>::tr(){
-    if (cols != rows) throw Dimensions_Incorrect();
     T result = 0;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
@@ -119,9 +118,9 @@ void Matrix<T>::EnterMatrix() {
 
     rows = newRows;
     columns = newColumns;
-    matrix = new double* [rows];
+    matrix = new T*[rows];
     for (int i = 0; i < rows; i++)
-        matrix[i] = new double[columns];
+        matrix[i] = new T[columns];
 
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < columns; j++)
@@ -138,7 +137,7 @@ Matrix<T> Matrix<T>::operator * (const T& h){
 }
 
 template <class T>
-Matrix<T> Matrix<T>::operator * (const Matrix<T>& New_Matrix) {
+Matrix<T> Matrix<T>::operator * (const Matrix<T>& rhs) {
     if (columns == rhs.rows) {
         Matrix result(rows, rhs.columns);
         for (int i = 0; i < rows; i++)
@@ -154,14 +153,14 @@ Matrix<T> Matrix<T>::operator * (const Matrix<T>& New_Matrix) {
 }
     
 template <class T>
-Matrix<T> operator * (const T& scalar, const Matrix<T>& New_Matrix) {
+Matrix<T> operator * (const T& h, const Matrix<T>& matrix) {
     Matrix result(matrix.GetRows(), matrix.GetCols());
     result = matrix * h;
     return result;
 }
 
 template <class T>
-Matrix<T> operator / (const T& scalar, const Matrix<T>& New_Matrix) {
+Matrix<T> operator / (const T& h, const Matrix<T>& matrix) {
     Matrix result(matrix.GetRows(), matrix.GetCols());
     if (h == 0) {
         std::cout << "invalid syntax, division by zero is not possible";
@@ -170,7 +169,7 @@ Matrix<T> operator / (const T& scalar, const Matrix<T>& New_Matrix) {
         result = matrix / h;
         return result;
     }
-}
+}*/
 template <class T>
 bool Matrix<T>::operator == (const Matrix& rhs) {
     bool result = true;
@@ -199,11 +198,11 @@ ostream&  operator << (ostream& s, const Matrix<T>& matrix) {
 }
 template <class T>
 Matrix<T> Matrix<T>::Solution_of_the_equation(const Matrix& Mat) {
-    double det = matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[2][1] * matrix[1][2]) -
+    T det = matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[2][1] * matrix[1][2]) -
         matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0]) +
         matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0]);
 
-    double invdet = 1 / det;
+    T invdet = 1 / det;
 
     Matrix matrix2(3, 3), matrixResult;
     matrix2(0, 0) = (matrix[1][1] * matrix[2][2] - matrix[2][1] * matrix[1][2]) * invdet;

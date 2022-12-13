@@ -163,12 +163,14 @@ T int_checker() {
     int data = (int)atoi(n_data);
     return data;
 }
-template <class T>
 //Matrix<T> operator / (const T& scalar, Matrix<T>&rhs);
 //std::ostream& operator << (std::ostream& s, const Matrix<T& matrix);
 
-int main() {
-    Matrix A(3, 3), B(3, 3), b(3, 1), D(3, 3);
+
+template <class T>
+void menu()
+{
+    Matrix<T> A(3, 3), B(3, 3), b(3, 1), D(3, 3);
     //Matrix A
     A(0, 0) = 3;
     A(0, 1) = 2;
@@ -378,5 +380,48 @@ int main() {
             if (m2 == 13) break;
         }
     }
+    return 0;
+}
+int main() {
+    setlocale(LC_ALL, "RUS");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    bool exit = true;
+    while (exit) {
+        cout << "1 - work with the int type" << endl;
+        cout << "2 - work with the double type" << endl;
+        cout << "3 - work with the float type" << endl;
+        cout << "4 - work with the complex-double type" << endl;
+        cout << "5 - work with the complex-float type" << endl;
+        cout << "0 - complete the work" << endl;
+
+        int key = get_key();
+
+        switch (key)
+        {
+        case 49:
+            menu<int>();
+            break;
+        case 50:
+            menu<double>();
+            break;
+        case 51:
+            menu<float>();
+            break;
+        case 52:
+            menu<complex<double>>();
+            break;
+        case 53:
+            menu<complex<float>>();
+            break;
+        case 48:
+            exit = false;
+            break;
+        default:
+            break;
+        }
+
+    }
+
     return 0;
 }
