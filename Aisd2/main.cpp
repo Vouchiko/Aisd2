@@ -28,7 +28,6 @@ int menu1() {
         "0 - Solution_of_the_equation A*x = B\n\n"
         "Exit: Esc";
 
-
     while (true) {
         int key = get_key();
         if ((key == 27) || (key >= '0' && key <= '9'))
@@ -52,8 +51,8 @@ int menu3() {
         if (key == '1' || key == '2') return key;
     }
 }
-template<class T>
-T double_control(char* xn)
+
+bool double_control(char* xn)
 {
     char* tmp = xn;
     int zap_p = 0;
@@ -84,12 +83,12 @@ T double_control(char* xn)
     if (zap_p > 1) return false;
     return true;
 }
-template<class T>
-T double_checker() {
+
+double double_checker() {
     char n_data[64];
     while (true) {
         gets_s(n_data);
-        bool check = double_control(n_data);
+        bool check = double_control (n_data);
         if (check == true) break;
         else {
             cout << "  Invalid sitax! Try again: ";
@@ -99,8 +98,8 @@ T double_checker() {
     return data;
 }
 
-template<class T>
-T zero_checker() {
+
+double zero_checker() {
     char n_data[64];
     while (true) {
         gets_s(n_data);
@@ -113,8 +112,8 @@ T zero_checker() {
     double data = (double)atof(n_data);
     return data;
 }
-template<class T>
-T int_control(char* xn)
+
+bool int_control(char* xn)
 {
     char* tmp = xn;
     int zap_p = 0;
@@ -149,8 +148,8 @@ T int_control(char* xn)
     return true;
 }
 
-template<class T>
-T int_checker() {
+
+int int_checker() {
     char n_data[64];
     while (true) {
         gets_s(n_data);
@@ -168,7 +167,7 @@ T int_checker() {
 
 
 template <class T>
-void menu()
+int menu()
 {
     Matrix<T> A(3, 3), B(3, 3), b(3, 1), D(3, 3);
     //Matrix A
@@ -289,7 +288,7 @@ void menu()
         case '5': {
             system("cls");
             std::cout << "\tMultiplying a matrix by a scalar.\n\n";
-            double a;
+            T a;
             std::cout << "Enter a value (scalar): ";
             std::cin >> a;
             std::cout << "A * a:\n\n" << endl;
@@ -301,12 +300,12 @@ void menu()
         case '6': {
             system("cls");
             std::cout << "\tDividing a matrix by a scalar.\n\n";
-            double a;
+            T a;
             std::cout << "Enter a value (scalar): ";
             std::cin >> a;
             std::cout << "A \ a:\n\n" << endl;
             std::cout << A << "\n /\n\n " << a << "\n\n = \n\n";
-            if (a == 0)
+            if (a == T(0))
                 std::cout << "invalid syntax, division by zero is not possible" << endl;
             else {
                 D = A / a;

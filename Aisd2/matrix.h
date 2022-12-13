@@ -26,16 +26,7 @@ public:
 	Matrix operator * (const T& h);
 	Matrix operator / (const T& h);
 	bool operator == (const Matrix& rhs);
-	friend Matrix operator / (const float h, Matrix& matrix) {
-		Matrix result(matrix.GetRows(), matrix.GetCols());
-		if (h == 0) {
-			std::cout << "invalid syntax, division by zero is not possible";
-		}
-		else {
-			result = matrix / h;
-			return result;
-		}
-	}
+	//Matrix operator / (const T& h, Matrix& matrix);
 	friend Matrix operator * (const T& scalar, Matrix& rhs);
 	friend std::ostream& operator << (std::ostream& out, const Matrix<T>& matrix);
 	int GetRows() const;

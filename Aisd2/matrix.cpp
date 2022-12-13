@@ -65,7 +65,7 @@ T& Matrix<T>::operator ()(int i, int j) const {
 template <class T>
 Matrix<T> Matrix<T>::operator + (const Matrix<T>& rhs) {
     if ((rows == rhs.rows) && (columns == rhs.columns)) {
-        Matrix result(rows, columns);
+        Matrix<T> result(rows, columns);
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < columns; j++)
                 result.matrix[i][j] = matrix[i][j] + rhs.matrix[i][j];
@@ -76,7 +76,7 @@ Matrix<T> Matrix<T>::operator + (const Matrix<T>& rhs) {
 template <class T>
 Matrix<T> Matrix<T>::operator - (const Matrix<T>& rhs) {
     if ((rows == rhs.rows) && (columns == rhs.columns)) {
-        Matrix result(rows, columns);
+        Matrix<T> result(rows, columns);
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < columns; j++)
                 result.matrix[i][j] = matrix[i][j] - rhs.matrix[i][j];
@@ -87,7 +87,7 @@ Matrix<T> Matrix<T>::operator - (const Matrix<T>& rhs) {
 template <class T>
 Matrix<T> Matrix<T>::operator / (const T& h) {
     Matrix result(rows, columns);
-    if (h == 0) {
+    if (h == T(0)) {
         std::cout << "invalid syntax, division by zero is not possible";
     }
     else {
@@ -158,9 +158,8 @@ Matrix<T> operator * (const T& h, const Matrix<T>& matrix) {
     result = matrix * h;
     return result;
 }
-
-template <class T>
-Matrix<T> operator / (const T& h, const Matrix<T>& matrix) {
+/*template <class T>
+ Matrix<T> operator / (const T& h, Matrix<T>& matrix) {
     Matrix result(matrix.GetRows(), matrix.GetCols());
     if (h == 0) {
         std::cout << "invalid syntax, division by zero is not possible";
@@ -198,11 +197,11 @@ ostream&  operator << (ostream& s, const Matrix<T>& matrix) {
 }
 template <class T>
 Matrix<T> Matrix<T>::Solution_of_the_equation(const Matrix& Mat) {
-    T det = matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[2][1] * matrix[1][2]) -
+     T det = matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[2][1] * matrix[1][2]) -
         matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0]) +
         matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0]);
 
-    T invdet = 1 / det;
+    T invdet = (T(1) / det);
 
     Matrix matrix2(3, 3), matrixResult;
     matrix2(0, 0) = (matrix[1][1] * matrix[2][2] - matrix[2][1] * matrix[1][2]) * invdet;
