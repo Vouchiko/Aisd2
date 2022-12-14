@@ -7,6 +7,8 @@
 #include <complex>
 
 
+
+
 int get_key() {
     int key = _getch();
     if ((key == 0) || (key == 224))
@@ -27,6 +29,7 @@ int menu1() {
         "9 - Access to an element in matrix A by index\n\n"
         "0 - Solution_of_the_equation A*x = B\n\n"
         "Exit: Esc";
+
 
     while (true) {
         int key = get_key();
@@ -88,7 +91,7 @@ double double_checker() {
     char n_data[64];
     while (true) {
         gets_s(n_data);
-        bool check = double_control (n_data);
+        bool check = double_control(n_data);
         if (check == true) break;
         else {
             cout << "  Invalid sitax! Try again: ";
@@ -112,7 +115,6 @@ double zero_checker() {
     double data = (double)atof(n_data);
     return data;
 }
-
 bool int_control(char* xn)
 {
     char* tmp = xn;
@@ -148,7 +150,6 @@ bool int_control(char* xn)
     return true;
 }
 
-
 int int_checker() {
     char n_data[64];
     while (true) {
@@ -162,9 +163,6 @@ int int_checker() {
     int data = (int)atoi(n_data);
     return data;
 }
-//Matrix<T> operator / (const T& scalar, Matrix<T>&rhs);
-//std::ostream& operator << (std::ostream& s, const Matrix<T& matrix);
-
 
 template <class T>
 int menu()
@@ -288,7 +286,7 @@ int menu()
         case '5': {
             system("cls");
             std::cout << "\tMultiplying a matrix by a scalar.\n\n";
-            T a;
+            double a;
             std::cout << "Enter a value (scalar): ";
             std::cin >> a;
             std::cout << "A * a:\n\n" << endl;
@@ -300,12 +298,12 @@ int menu()
         case '6': {
             system("cls");
             std::cout << "\tDividing a matrix by a scalar.\n\n";
-            T a;
+            double a;
             std::cout << "Enter a value (scalar): ";
             std::cin >> a;
             std::cout << "A \ a:\n\n" << endl;
             std::cout << A << "\n /\n\n " << a << "\n\n = \n\n";
-            if (a == T(0))
+            if (a == 0)
                 std::cout << "invalid syntax, division by zero is not possible" << endl;
             else {
                 D = A / a;
@@ -381,18 +379,23 @@ int menu()
     }
     return 0;
 }
-int main() {
+
+int main()
+{
+
     setlocale(LC_ALL, "RUS");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     bool exit = true;
     while (exit) {
-        cout << "1 - work with the int type" << endl;
-        cout << "2 - work with the double type" << endl;
-        cout << "3 - work with the float type" << endl;
-        cout << "4 - work with the complex-double type" << endl;
-        cout << "5 - work with the complex-float type" << endl;
-        cout << "0 - complete the work" << endl;
+        cout << "Здравствуйте! Вас приветствует программа \"МНОГО МАТРИЦ\"\n" << endl;
+        cout << "Нажмите:" << endl;
+        cout << "1 - чтобы работать с типом int" << endl;
+        cout << "2 - чтобы работать с типом double" << endl;
+        cout << "3 - чтобы работать с типом float" << endl;
+        cout << "4 - чтобы работать с типом complex-double" << endl;
+        cout << "5 - чтобы работать с типом complex-float" << endl;
+        cout << "0 - чтобы завершить работу" << endl;
 
         int key = get_key();
 
