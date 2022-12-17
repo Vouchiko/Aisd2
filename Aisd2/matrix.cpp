@@ -9,13 +9,19 @@ bool int_control(char* xn);
 int int_checker();
 
 template <class T>
-Matrix<T>::Matrix(){
+Matrix<T>::Matrix() {
     epsilon = 0;
     rows = 0;
     columns = 0;
     matrix = NULL;
 }
-
+template <class T>
+Matrix<T>::~Matrix()
+{
+    for (int i = 0; i < rows; i++)
+        delete[] matrix[i];
+    delete[] matrix;
+}
 template <class T>
 Matrix<T>::Matrix(int rows, int columns) {
     if (rows > 0)
@@ -25,7 +31,7 @@ Matrix<T>::Matrix(int rows, int columns) {
         this->columns = columns;
     else throw "Invalid value!";
 
-    matrix = (T**) new T * [rows];
+    matrix = new T* [rows];
     for (int i = 0; i < rows; i++)
         matrix[i] = (T*) new T[columns];
 
@@ -33,6 +39,21 @@ Matrix<T>::Matrix(int rows, int columns) {
         for (int j = 0; j < columns; j++)
             matrix[i][j] = i + j;
 }
+template <class T> 
+Matrix<T>::Matrix(const Matrix& a)
+{
+    this->rows = a.rows;
+    this->columns = a.columns;
+    this->matrix= new T*[rows];
+    for (int i = 0; i < rows; i++)
+        matrix[i] = (T*) new T[columns];
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++)
+            matrix[i][j] = a.matrix[i][j];
+    }
+}
+
 
 template <class T>
 int Matrix<T>::GetRows() const {
@@ -56,12 +77,14 @@ T Matrix<T>::tr(){
     }
     return result;
 }
+
 template <class T>
 T& Matrix<T>::operator ()(int i, int j) const {
     if ((i >= 0) && (i < rows) && (j >= 0) && (j < columns))
         return matrix[i][j];
     else throw "Incorrect index values!";
 }
+
 template <class T>
 Matrix<T> Matrix<T>::operator + (const Matrix<T>& rhs) {
     if ((rows == rhs.rows) && (columns == rhs.columns)) {
@@ -73,6 +96,7 @@ Matrix<T> Matrix<T>::operator + (const Matrix<T>& rhs) {
     }
     throw "The dimensions of the matrices do not match! Addition of matrices with different dimensions is unacceptable!";
 }
+
 template <class T>
 Matrix<T> Matrix<T>::operator - (const Matrix<T>& rhs) {
     if ((rows == rhs.rows) && (columns == rhs.columns)) {
@@ -84,6 +108,7 @@ Matrix<T> Matrix<T>::operator - (const Matrix<T>& rhs) {
     }
     throw "The dimensions of the matrices do not match! Subtraction of matrices with different dimensions is unacceptable!";
 }
+
 template <class T>
 Matrix<T> Matrix<T>::operator / (const T& h) {
     Matrix result(rows, columns);
@@ -97,12 +122,9 @@ Matrix<T> Matrix<T>::operator / (const T& h) {
     }
     return result;
 }
+
 template <class T>
 void Matrix<T>::EnterMatrix() {
-    for (int i = 0; i < rows; i++)
-        delete[] matrix[i];
-    delete[] matrix;
-
     std::cout << "Enter the dimension of the matrix:" << endl;
     std::cout << "Number of rows: ";
     int newRows = int_checker();
@@ -115,16 +137,7 @@ void Matrix<T>::EnterMatrix() {
             std::cout << "Cell (" << i << ", " << j << ") = ";
             std::cin >> newMatrix.matrix[i][j];
         }
-
-    rows = newRows;
-    columns = newColumns;
-    matrix = new T*[rows];
-    for (int i = 0; i < rows; i++)
-        matrix[i] = new T[columns];
-
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < columns; j++)
-            matrix[i][j] = newMatrix.matrix[i][j];
+    *this = newMatrix;
 }
 
 template <class T>
@@ -151,24 +164,7 @@ Matrix<T> Matrix<T>::operator * (const Matrix<T>& rhs) {
     }
     throw "Matrices cannot be multiplied! Invalid dimension!";
 }
-    
-template <class T>
-Matrix<T> operator * (const T& h, const Matrix<T>& matrix) {
-    Matrix result(matrix.GetRows(), matrix.GetCols());
-    result = matrix * h;
-    return result;
-}
-/*template <class T>
- Matrix<T> operator / (const T& h, Matrix<T>& matrix) {
-    Matrix result(matrix.GetRows(), matrix.GetCols());
-    if (h == 0) {
-        std::cout << "invalid syntax, division by zero is not possible";
-    }
-    else {
-        result = matrix / h;
-        return result;
-    }
-}*/
+
 template <class T>
 bool Matrix<T>::operator == (const Matrix& rhs) {
     bool result = true;
@@ -186,24 +182,27 @@ bool Matrix<T>::operator == (const Matrix& rhs) {
 }
 
 template <class T>
-ostream&  operator << (ostream& s, const Matrix<T>& matrix) {
-
-    for (int i = 0; i < matrix.rows; i++) {
-        for (int j = 0; j < matrix.columns; j++)
-            s << matrix.matrix[i][j] << " ";
-        s << "\n";
-    }
-    return s;
+Matrix<T>& Matrix<T>::operator = (const Matrix<T>& a) {
+    this->~Matrix();
+    this->rows = a.rows;
+    this->columns = a.columns;
+    this->matrix = new T* [rows];
+    for (int i = 0; i < rows; i++)
+        matrix[i] = new T[columns];
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < columns; j++)
+            matrix[i][j] = a.matrix[i][j];
+    return *this;
 }
 template <class T>
 Matrix<T> Matrix<T>::Solution_of_the_equation(const Matrix& Mat) {
-     T det = matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[2][1] * matrix[1][2]) -
+    T det = matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[2][1] * matrix[1][2]) -
         matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0]) +
         matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0]);
 
     T invdet = (T(1) / det);
 
-    Matrix matrix2(3, 3), matrixResult;
+    Matrix matrix2(3, 3);
     matrix2(0, 0) = (matrix[1][1] * matrix[2][2] - matrix[2][1] * matrix[1][2]) * invdet;
     matrix2(0, 1) = (matrix[0][2] * matrix[2][1] - matrix[0][1] * matrix[2][2]) * invdet;
     matrix2(0, 2) = (matrix[0][1] * matrix[1][2] - matrix[0][2] * matrix[1][1]) * invdet;
@@ -214,7 +213,7 @@ Matrix<T> Matrix<T>::Solution_of_the_equation(const Matrix& Mat) {
     matrix2(2, 1) = (matrix[2][0] * matrix[0][1] - matrix[0][0] * matrix[2][1]) * invdet;
     matrix2(2, 2) = (matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1]) * invdet;
 
-    matrixResult = matrix2 * Mat;
+    Matrix matrixResult = matrix2 * Mat;
     return matrixResult;
 }
 

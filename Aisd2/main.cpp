@@ -101,7 +101,6 @@ double double_checker() {
     return data;
 }
 
-
 double zero_checker() {
     char n_data[64];
     while (true) {
@@ -330,7 +329,6 @@ int menu()
             }
             break;
         }
-
         case '9':
         {
             try {
@@ -342,7 +340,6 @@ int menu()
                 int y = int_checker();
                 std::cout << "\nthe value of the element: " << A(x, y);
                 std::cout << "\nDo you want to change ellement?\n";
-
 
                 int m3 = menu3();
                 switch (m3) {
@@ -357,14 +354,12 @@ int menu()
                 }
                        break;
                 }
-
             }
             catch (const char* message) {
                 std::cout << message;
             }
             break;
         }
-
         case'0': {
             system("cls");
             std::cout << "Solution_of_the_equation A*x = B" << endl;
@@ -382,23 +377,19 @@ int menu()
 
 int main()
 {
-
     setlocale(LC_ALL, "RUS");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     bool exit = true;
     while (exit) {
-        cout << "Здравствуйте! Вас приветствует программа \"МНОГО МАТРИЦ\"\n" << endl;
-        cout << "Нажмите:" << endl;
-        cout << "1 - чтобы работать с типом int" << endl;
-        cout << "2 - чтобы работать с типом double" << endl;
-        cout << "3 - чтобы работать с типом float" << endl;
-        cout << "4 - чтобы работать с типом complex-double" << endl;
-        cout << "5 - чтобы работать с типом complex-float" << endl;
-        cout << "0 - чтобы завершить работу" << endl;
-
+        std::cout << "Press:" << std::endl;
+        std::cout << "1 - to work with int" << std::endl;
+        std::cout << "2 - to work with double" << std::endl;
+        std::cout << "3 - to work with float" << std::endl;
+        std::cout << "4 - to work with complex-double" << std::endl;
+        std::cout << "5 - to work with complex-float" << std::endl;
+        std::cout << "0 - exit" << endl;
         int key = get_key();
-
         switch (key)
         {
         case 49:
@@ -422,8 +413,6 @@ int main()
         default:
             break;
         }
-
     }
-
     return 0;
 }

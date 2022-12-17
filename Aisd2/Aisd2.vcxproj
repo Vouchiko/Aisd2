@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="matrix.h" />
-    <ClInclude Include="Header1.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="matrix.cpp" />
